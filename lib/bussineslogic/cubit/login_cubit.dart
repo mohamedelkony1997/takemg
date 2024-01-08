@@ -1,9 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:takemg/models/login.dart';
 import 'package:takemg/repositery/Auth/loginrepositery.dart';
+import 'package:takemg/repositery/cruds/crudrepositery.dart';
 
 class DataCubit extends Cubit<List<DataModel>> {
   final DataRepository repository = DataRepository();
+  final CrudRepositery crudrepo = CrudRepositery();
 
   DataCubit() : super([]);
 
@@ -18,7 +20,7 @@ class DataCubit extends Cubit<List<DataModel>> {
 
   Future<void> deleteItem(String email, int id) async {
     try {
-      await repository.deleteItem(email, id);
+      await crudrepo.deleteItem(email, id);
 
       fetchData(email);
     } catch (e) {
@@ -27,9 +29,9 @@ class DataCubit extends Cubit<List<DataModel>> {
   }
 
   Future<void> editItem(String email, int id, String title, String description,
-      String imgLink) async {
+      String imgLink, String newEmail) async {
     try {
-      await repository.editItem(email, id, title, description, imgLink);
+      await crudrepo.editItem(email, id, title, description, imgLink);
 
       fetchData(email);
     } catch (e) {
@@ -38,7 +40,7 @@ class DataCubit extends Cubit<List<DataModel>> {
   }
 Future<void> addItem(String title, String description, String imgLink, String email) async {
     try {
-      await repository.addItem(title, description, imgLink, email);
+      await crudrepo.addItem(title, description, imgLink, email);
 
       fetchData(email);
     } catch (e) {

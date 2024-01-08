@@ -103,6 +103,7 @@ class HomePage extends StatelessWidget {
   void _showEditDialog(BuildContext context, DataModel item) {
     TextEditingController titleController = TextEditingController(text: item.title);
     TextEditingController descriptionController = TextEditingController(text: item.description);
+    TextEditingController imgController = TextEditingController(text: item.imgLink);
     TextEditingController emailController = TextEditingController(text: item.email);
 
     showDialog(
@@ -122,6 +123,10 @@ class HomePage extends StatelessWidget {
                 decoration: InputDecoration(labelText: 'Description'),
               ),
               TextFormField(
+                controller: imgController,
+                decoration: InputDecoration(labelText: 'ImageLink'),
+              ),
+              TextFormField(
                 controller: emailController,
                 decoration: InputDecoration(labelText: 'Email'),
               ),
@@ -136,7 +141,7 @@ class HomePage extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                _editItem(context, item, titleController.text, descriptionController.text, emailController.text);
+                _editItem(context, item, titleController.text, descriptionController.text, imgController.text,emailController.text);
                 Navigator.of(context).pop();
               },
               child: Text("Save"),
@@ -147,9 +152,9 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void _editItem(BuildContext context, DataModel item, String newTitle, String newDescription, String newEmail) {
+  void _editItem(BuildContext context, DataModel item, String newTitle, String newDescription, String imge,String newEmail) {
     final dataCubit = context.read<DataCubit>();
-    dataCubit.editItem(item.email!, item.id!, newTitle, newDescription, newEmail);
+    dataCubit.editItem(item.email!, item.id!, newTitle, newDescription, imge,newEmail);
   }
   
 
