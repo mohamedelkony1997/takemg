@@ -20,16 +20,16 @@ class HomePage extends StatelessWidget {
             itemBuilder: (context, index) {
               final DataModel item = storedData[index];
               return ListTile(
-                title: Text(item.title),
+                title: Text(item.title!),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(item.description),
-                    Text(item.email),
+                    Text(item.description!),
+                    Text((item.email!=null)?item.email!:"null"),
                   ],
                 ),
                 leading: Image.network(
-                  item.imgLink,
+                  item.imgLink!,
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,
@@ -61,7 +61,7 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-         _showAddItemDialog(context);
+       _showAddDialog(context);
         },
         child: Icon(Icons.add),
       ),
@@ -97,7 +97,7 @@ class HomePage extends StatelessWidget {
 
   void _deleteItem(BuildContext context, DataModel item) {
     final dataCubit = context.read<DataCubit>();
-    dataCubit.deleteItem(item.email, item.id);
+    dataCubit.deleteItem(item.email!, item.id!);
   }
 
   void _showEditDialog(BuildContext context, DataModel item) {
@@ -130,7 +130,7 @@ class HomePage extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+           
               },
               child: Text("Cancel"),
             ),
@@ -149,13 +149,15 @@ class HomePage extends StatelessWidget {
 
   void _editItem(BuildContext context, DataModel item, String newTitle, String newDescription, String newEmail) {
     final dataCubit = context.read<DataCubit>();
-    dataCubit.editItem(item.email, item.id, newTitle, newDescription, newEmail);
+    dataCubit.editItem(item.email!, item.id!, newTitle, newDescription, newEmail);
   }
-  void _showAddItemDialog(BuildContext context) {
+  
+
+void _showAddDialog(BuildContext context) {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController imgLinkController = TextEditingController();
+      TextEditingController imageController = TextEditingController();
 
   showDialog(
     context: context,
@@ -163,7 +165,6 @@ class HomePage extends StatelessWidget {
       return AlertDialog(
         title: Text("Add Item"),
         content: ListView(
-     
           children: [
             TextFormField(
               controller: titleController,
@@ -173,10 +174,9 @@ class HomePage extends StatelessWidget {
               controller: descriptionController,
               decoration: InputDecoration(labelText: 'Description'),
             ),
-            
             TextFormField(
-              controller: imgLinkController,
-              decoration: InputDecoration(labelText: 'Image Link'),
+              controller: imageController,
+              decoration: InputDecoration(labelText: 'imglink'),
             ),
             TextFormField(
               controller: emailController,
@@ -193,7 +193,7 @@ class HomePage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              _addItem(context,  titleController.text, descriptionController.text, imgLinkController.text,emailController.text,);
+              _addItem(context, titleController.text, descriptionController.text, imageController.text,emailController.text);
               Navigator.of(context).pop();
             },
             child: Text("Add"),
@@ -204,9 +204,8 @@ class HomePage extends StatelessWidget {
   );
 }
 
-void _addItem(BuildContext context, String title, String description, String imgLink,String email,) {
+void _addItem(BuildContext context, String title, String description, String imglink,String email) {
   final dataCubit = context.read<DataCubit>();
-  dataCubit.addItem(title, description, imgLink, email);
+  dataCubit.addItem(title, description, imglink, email); // Pass empty string for imgLink as it is not used in the create.php API
 }
-
 }

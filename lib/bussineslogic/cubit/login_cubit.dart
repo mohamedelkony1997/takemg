@@ -36,14 +36,12 @@ class DataCubit extends Cubit<List<DataModel>> {
       print(e.toString());
     }
   }
-  Future<void> addItem(String email, String title, String description, String imgLink) async {
+Future<void> addItem(String title, String description, String imgLink, String email) async {
     try {
-      await repository.addItem(email, title, description, imgLink);
+      await repository.addItem(title, description, imgLink, email);
 
-      // Fetch updated data after adding a new item
       fetchData(email);
     } catch (e) {
-      // Handle error
       print(e.toString());
     }
   }

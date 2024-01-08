@@ -13,6 +13,7 @@ class DataRepository {
       final List<dynamic> jsonResponse = json.decode(response.body);
 
       return jsonResponse.map((data) => DataModel.fromJson(data)).toList();
+
     } else {
       throw Exception('Failed to load data');
     }
@@ -52,27 +53,30 @@ class DataRepository {
     }
   }
 
- Future<void> addItem(String title, String description, String imgLink, String email) async {
-  try {
-    final response = await http.post(
-      Uri.parse('${BaseUrl}create.php'),
-      body: {
-        'title': title,
-        'description': description,
-        'img_link': imgLink,
-        'email': email,
-      },
-    );
+  Future<void> addItem(String title, String description, String imgLink, String email) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${BaseUrl}create.php'),
+        body: jsonEncode({
+          "title": title,
+          "description": description,
+          "img_link": imgLink,
+          "email": email,
+        }),
+        headers: {'Content-Type': 'application/json'},
+      );
 
-    if (response.statusCode == 200) {
-      print('Item added successfully');
-    } else {
-      print('Failed to add item: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        print('Item added successfully');
+      } else {
+        print('Failed to add item: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error while adding item: $e');
     }
-  } catch (e) {
-    print('Error while adding item: $e');
   }
-}
+
+
 
 
 }

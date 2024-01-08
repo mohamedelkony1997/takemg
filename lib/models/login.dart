@@ -1,9 +1,9 @@
 class DataModel {
-  final int id;
-  final String title;
-  final String description;
-  final String imgLink;
-  final String email;
+  final int? id;
+  final String? title;
+  final String? description;
+  final String ?imgLink;
+  final String? email;
 
   DataModel({
     required this.id,
